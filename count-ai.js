@@ -18,7 +18,7 @@
           return scoreBoard(O.force(m.gameTreePromise).board, gameTree.player);
         });
       var maxScore = Math.max.apply(null, scores);
-      console.log(gameTree);
+      //console.log(gameTree);
       return gameTree.moves[scores.indexOf(maxScore)]
     }
   });

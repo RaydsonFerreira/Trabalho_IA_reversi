@@ -49,7 +49,7 @@
   }
 
   function setUpUIToChooseMove(gameTree) {
-    console.log(gameTree);
+    //console.log(gameTree);
     $('#message').text('Choose your move.');
     gameTree.moves.forEach(function (m, i) {
       if (m.isPassingMove) {
@@ -75,7 +75,7 @@
       startNewGame();
   }
 
-  var minimumDelayForAI = 500;  // milliseconds
+  var minimumDelayForAI = 0;  // milliseconds
   function chooseMoveByAI(gameTree, ai) {
     $('#message').text('Now thinking...');
     setTimeout(
@@ -174,6 +174,8 @@
     $('#preference-pane :input:not(#repeat-games)')
       .addClass('disabled')
       .attr('disabled', 'disabled');
+    // console.log(makePlayer(blackPlayerType()));
+    // console.log(makePlayer(whitePlayerType()));
     playerTable[O.BLACK] = makePlayer(blackPlayerType());
     playerTable[O.WHITE] = makePlayer(whitePlayerType());
     shiftToNewGameTree(O.makeInitialGameTree());

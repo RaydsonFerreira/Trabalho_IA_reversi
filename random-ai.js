@@ -1,6 +1,6 @@
 othello.registerAI({
   findTheBestMove: function (gameTree) {
-    console.log(gameTree);
+    //console.log(gameTree);
     return gameTree.moves[Math.floor(Math.random() * gameTree.moves.length)];
   }
 });

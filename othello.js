@@ -5,23 +5,23 @@ var othello = {};
 
   // Utilities {{{1
 
-  function memoize(f) {
-    var memo = {};
-    var first = 0;
-    var second = 0;
-    return function () {
-      if (arguments[0] === 'stat')
-        return [first, second];
-      var key = JSON.stringify(arguments);
-      if (memo[key] === undefined) {
-        memo[key] = f.apply(this, arguments);
-        first++;
-      } else {
-        second++;
-      }
-      return memo[key];
-    };
-  }
+  // function memoize(f) {
+  //   var memo = {};
+  //   var first = 0;
+  //   var second = 0;
+  //   return function () {
+  //     if (arguments[0] === 'stat')
+  //       return [first, second];
+  //     var key = JSON.stringify(arguments);
+  //     if (memo[key] === undefined) {
+  //       memo[key] = f.apply(this, arguments);
+  //       first++;
+  //     } else {
+  //       second++;
+  //     }
+  //     return memo[key];
+  //   };
+  // }
 
   function delay(expressionAsFunction) {
     var result;
@@ -40,13 +40,13 @@ var othello = {};
     return promise();
   }
 
-  function sum(ns) {
-    return ns.reduce(function (t, n) {return t + n;});
-  }
+  // function sum(ns) {
+  //   return ns.reduce(function (t, n) {return t + n;});
+  // }
 
-  function random(n) {
-    return Math.floor(Math.random() * n);
-  }
+  // function random(n) {
+  //   return Math.floor(Math.random() * n);
+  // }
 
 
 
@@ -525,8 +525,8 @@ var othello = {};
   // AI {{{1
 
   var aiMakers = {
-    mcts: makeMonteCarloTreeSearchBasedAI,
-    pmc: makePrimitiveMonteCarloBasedAI
+    //mcts: makeMonteCarloTreeSearchBasedAI,
+    //pmc: makePrimitiveMonteCarloBasedAI
   };
 
   function makeAI(playerType) {
@@ -574,33 +574,33 @@ var othello = {};
   }
 
   var scorePositions = {
-    simpleCount: makeScorePositionWith((function () {
-      var t = [];
-      for (var x = 0; x < N; x++)
-        for (var y = 0; y < N; y++)
-          t[ix(x, y)] = 1;
-      return t;
-    })()),
-    basic: makeScorePositionWith((function () {
-      var t = [];
-      for (var x = 0; x < N; x++)
-        for (var y = 0; y < N; y++)
-          t[ix(x, y)] =
-            (x === 0 || x === N - 1 ? 10 : 1) *
-            (y === 0 || y === N - 1 ? 10 : 1);
-      return t;
-    })()),
-    better: makeScorePositionWith((function () {
-      var t = [];
-      for (var x = 0; x < N; x++)
-        for (var y = 0; y < N; y++)
-          t[ix(x, y)] =
-            (x === 0 || x === N - 1 ? 10 : 1) *
-            (y === 0 || y === N - 1 ? 10 : 1);
-      t[ix(0, 1)] = t[ix(0, N - 2)] = t[ix(N - 1, 1)] = t[ix(N - 1, N - 2)] =
-      t[ix(1, 0)] = t[ix(N - 2, 0)] = t[ix(1, N - 1)] = t[ix(N - 2, N - 1)] = 0;
-      return t;
-    })()),
+    // simpleCount: makeScorePositionWith((function () {
+    //   var t = [];
+    //   for (var x = 0; x < N; x++)
+    //     for (var y = 0; y < N; y++)
+    //       t[ix(x, y)] = 1;
+    //   return t;
+    // })()),
+    // basic: makeScorePositionWith((function () {
+    //   var t = [];
+    //   for (var x = 0; x < N; x++)
+    //     for (var y = 0; y < N; y++)
+    //       t[ix(x, y)] =
+    //         (x === 0 || x === N - 1 ? 10 : 1) *
+    //         (y === 0 || y === N - 1 ? 10 : 1);
+    //   return t;
+    // })()),
+    // better: makeScorePositionWith((function () {
+    //   var t = [];
+    //   for (var x = 0; x < N; x++)
+    //     for (var y = 0; y < N; y++)
+    //       t[ix(x, y)] =
+    //         (x === 0 || x === N - 1 ? 10 : 1) *
+    //         (y === 0 || y === N - 1 ? 10 : 1);
+    //   t[ix(0, 1)] = t[ix(0, N - 2)] = t[ix(N - 1, 1)] = t[ix(N - 1, N - 2)] =
+    //   t[ix(1, 0)] = t[ix(N - 2, 0)] = t[ix(1, N - 1)] = t[ix(N - 2, N - 1)] = 0;
+    //   return t;
+    // })()),
     edgesAndCorners: makeScorePositionWith((function () {
       var t = [];
       for (var x = 0; x < N; x++)
@@ -622,14 +622,15 @@ var othello = {};
       t[ix(0, 0)] = t[ix(0, N - 1)] =
       t[ix(N - 1, 0)] = t[ix(N - 1, N - 1)] = 100;
       return t;
-    })()),
-    moveCount: function (gameTree, player) {
-      return gameTree.actualMoveCount * (gameTree.player == player ? 1 : -1);
-    },
-    moveCountAndPositions: function (gameTree, player) {
-      return scorePositions.moveCount(gameTree, player) +
-             scorePositions.edgesAndCorners(gameTree, player);
-    }
+    })())
+    // ,
+    // moveCount: function (gameTree, player) {
+    //   return gameTree.actualMoveCount * (gameTree.player == player ? 1 : -1);
+    // },
+    // moveCountAndPositions: function (gameTree, player) {
+    //   return scorePositions.moveCount(gameTree, player) +
+    //          scorePositions.edgesAndCorners(gameTree, player);
+    // }
   };
 
   function makeScoreBasedAI(config) {
@@ -762,144 +763,144 @@ var othello = {};
 
   // AI: Monte Carlo Tree Search {{{1
 
-  function makeMonteCarloTreeSearchBasedAI(options) {
-    return {
-      findTheBestMove: function (gameTree) {
-        return tryMonteCarloTreeSearch(gameTree, options.level, options.extras.length > 0);
-      }
-    };
-  }
+  // function makeMonteCarloTreeSearchBasedAI(options) {
+  //   return {
+  //     findTheBestMove: function (gameTree) {
+  //       return tryMonteCarloTreeSearch(gameTree, options.level, options.extras.length > 0);
+  //     }
+  //   };
+  // }
 
-  function tryMonteCarloTreeSearch(rootGameTree, maxTries, isBroken) {
-    var root = new Node(rootGameTree, null, null);
+  // function tryMonteCarloTreeSearch(rootGameTree, maxTries, isBroken) {
+  //   var root = new Node(rootGameTree, null, null);
 
-    for (var i = 0; i < maxTries; i++) {
-      var node = root;
+  //   for (var i = 0; i < maxTries; i++) {
+  //     var node = root;
 
-      while (node.untriedMoves.length === 0 && node.childNodes.length !== 0)
-        node = node.selectChild(rootGameTree.player, isBroken);
+  //     while (node.untriedMoves.length === 0 && node.childNodes.length !== 0)
+  //       node = node.selectChild(rootGameTree.player, isBroken);
 
-      if (node.untriedMoves.length !== 0)
-        node = node.expandChild();
+  //     if (node.untriedMoves.length !== 0)
+  //       node = node.expandChild();
 
-      var won = node.simulate(rootGameTree.player);
+  //     var won = node.simulate(rootGameTree.player);
 
-      node.backpropagate(won);
-    }
+  //     node.backpropagate(won);
+  //   }
 
-    var vs = root.childNodes.map(function (n) {return n.visits;});
-    return root.childNodes[vs.indexOf(Math.max.apply(null, vs))].move;
-  }
+  //   var vs = root.childNodes.map(function (n) {return n.visits;});
+  //   return root.childNodes[vs.indexOf(Math.max.apply(null, vs))].move;
+  // }
 
-  function Node(gameTree, parentNode, move) {
-    this.gameTree = gameTree;
-    this.parentNode = parentNode;
-    this.move = move;
-    this.childNodes = [];
-    this.wins = 0;
-    this.visits = 0;
-    this.untriedMoves = gameTree.moves.slice();
-  }
+  // function Node(gameTree, parentNode, move) {
+  //   this.gameTree = gameTree;
+  //   this.parentNode = parentNode;
+  //   this.move = move;
+  //   this.childNodes = [];
+  //   this.wins = 0;
+  //   this.visits = 0;
+  //   this.untriedMoves = gameTree.moves.slice();
+  // }
 
-  Node.prototype.selectChild = function (rootGamePlayer, isBroken) {
-    var currentPlayer = this.gameTree.player;
-    var totalVisits = this.visits;
-    var values = this.childNodes.map(function (n) {
-      var winPercentage = n.wins / n.visits;
-      if (!isBroken && currentPlayer != rootGamePlayer) {
-        winPercentage = (n.visits - n.wins) / n.visits
-      }
-      return winPercentage +
-             Math.sqrt(2 * Math.log(totalVisits) / n.visits);
-    });
-    return this.childNodes[values.indexOf(Math.max.apply(null, values))];
-  };
+  // Node.prototype.selectChild = function (rootGamePlayer, isBroken) {
+  //   var currentPlayer = this.gameTree.player;
+  //   var totalVisits = this.visits;
+  //   var values = this.childNodes.map(function (n) {
+  //     var winPercentage = n.wins / n.visits;
+  //     if (!isBroken && currentPlayer != rootGamePlayer) {
+  //       winPercentage = (n.visits - n.wins) / n.visits
+  //     }
+  //     return winPercentage +
+  //            Math.sqrt(2 * Math.log(totalVisits) / n.visits);
+  //   });
+  //   return this.childNodes[values.indexOf(Math.max.apply(null, values))];
+  // };
 
-  Node.prototype.expandChild = function () {
-    var i = random(this.untriedMoves.length);
-    var move = this.untriedMoves.splice(i, 1)[0];
-    var child = new Node(force(move.gameTreePromise), this, move);
-    this.childNodes.push(child);
-    return child;
-  };
+  // Node.prototype.expandChild = function () {
+  //   var i = random(this.untriedMoves.length);
+  //   var move = this.untriedMoves.splice(i, 1)[0];
+  //   var child = new Node(force(move.gameTreePromise), this, move);
+  //   this.childNodes.push(child);
+  //   return child;
+  // };
 
-  Node.prototype.simulate = function (player) {
-    var gameTree = this.gameTree;
-    while (gameTree.moves.length !== 0) {
-      var i = random(gameTree.moves.length);
-      gameTree = force(gameTree.moves[i].gameTreePromise);
-    }
-    return judge(gameTree.board) * (player === BLACK ? 1 : -1) / 2 + 0.5;
-  };
+  // Node.prototype.simulate = function (player) {
+  //   var gameTree = this.gameTree;
+  //   while (gameTree.moves.length !== 0) {
+  //     var i = random(gameTree.moves.length);
+  //     gameTree = force(gameTree.moves[i].gameTreePromise);
+  //   }
+  //   return judge(gameTree.board) * (player === BLACK ? 1 : -1) / 2 + 0.5;
+  // };
 
-  Node.prototype.backpropagate = function (result) {
-    for (var node = this; node !== null; node = node.parentNode)
-      node.update(result);
-  };
+  // Node.prototype.backpropagate = function (result) {
+  //   for (var node = this; node !== null; node = node.parentNode)
+  //     node.update(result);
+  // };
 
-  Node.prototype.update = function (won) {
-    this.wins += won;
-    this.visits += 1;
-  };
+  // Node.prototype.update = function (won) {
+  //   this.wins += won;
+  //   this.visits += 1;
+  // };
 
-  Node.prototype.visualize = function (indent) {
-    indent = indent || 0;
-    var ss = [];
-    var i;
-    ss.push('\n');
-    for (i = 0; i < indent; i++)
-      ss.push('| ');
-    ss.push('W='); ss.push(this.wins);
-    ss.push('/');
-    ss.push('V='); ss.push(this.visits);
-    ss.push('/');
-    ss.push('U='); ss.push(this.untriedMoves.length);
-    for (i = 0; i < this.childNodes.length; i++)
-      ss.push(this.childNodes[i].visualize(indent + 1));
-    return ss.join('');
-  };
+  // Node.prototype.visualize = function (indent) {
+  //   indent = indent || 0;
+  //   var ss = [];
+  //   var i;
+  //   ss.push('\n');
+  //   for (i = 0; i < indent; i++)
+  //     ss.push('| ');
+  //   ss.push('W='); ss.push(this.wins);
+  //   ss.push('/');
+  //   ss.push('V='); ss.push(this.visits);
+  //   ss.push('/');
+  //   ss.push('U='); ss.push(this.untriedMoves.length);
+  //   for (i = 0; i < this.childNodes.length; i++)
+  //     ss.push(this.childNodes[i].visualize(indent + 1));
+  //   return ss.join('');
+  // };
 
 
 
 
   // AI: Primitive Monte Carlo {{{1
 
-  function makePrimitiveMonteCarloBasedAI(options) {
-    return {
-      findTheBestMove: function (gameTree) {
-        return tryPrimitiveMonteCarloSimulation(
-          gameTree,
-          options.level,
-          options.extras[0]
-        );
-      }
-    };
-  }
+  // function makePrimitiveMonteCarloBasedAI(options) {
+  //   return {
+  //     findTheBestMove: function (gameTree) {
+  //       return tryPrimitiveMonteCarloSimulation(
+  //         gameTree,
+  //         options.level,
+  //         options.extras[0]
+  //       );
+  //     }
+  //   };
+  // }
 
-  function tryPrimitiveMonteCarloSimulation(rootGameTree, maxTries, iterStyle) {
-    var moveCount = rootGameTree.moves.length;
-    var lastMove = rootGameTree.moves[moveCount - 1];
-    var scores = rootGameTree.moves.map(function (m) {
-      var s = 0;
-      var eachTries =
-        iterStyle === 'm'
-        ? maxTries
-        : Math.floor(maxTries / moveCount)
-          + (m === lastMove ? maxTries % moveCount : 0);
-      for (var i = 0; i < eachTries; i++)
-        s += simulateRandomGame(m, rootGameTree.player);
-      return s;
-    });
-    var maxScore = Math.max.apply(null, scores);
-    return rootGameTree.moves[scores.indexOf(maxScore)];
-  }
+  // function tryPrimitiveMonteCarloSimulation(rootGameTree, maxTries, iterStyle) {
+  //   var moveCount = rootGameTree.moves.length;
+  //   var lastMove = rootGameTree.moves[moveCount - 1];
+  //   var scores = rootGameTree.moves.map(function (m) {
+  //     var s = 0;
+  //     var eachTries =
+  //       iterStyle === 'm'
+  //       ? maxTries
+  //       : Math.floor(maxTries / moveCount)
+  //         + (m === lastMove ? maxTries % moveCount : 0);
+  //     for (var i = 0; i < eachTries; i++)
+  //       s += simulateRandomGame(m, rootGameTree.player);
+  //     return s;
+  //   });
+  //   var maxScore = Math.max.apply(null, scores);
+  //   return rootGameTree.moves[scores.indexOf(maxScore)];
+  // }
 
-  function simulateRandomGame(move, player) {
-    var gt = force(move.gameTreePromise);
-    while (gt.moves.length !== 0)
-      gt = force(gt.moves[random(gt.moves.length)].gameTreePromise);
-    return judge(gt.board) * (player === BLACK ? 1 : -1);
-  }
+  // function simulateRandomGame(move, player) {
+  //   var gt = force(move.gameTreePromise);
+  //   while (gt.moves.length !== 0)
+  //     gt = force(gt.moves[random(gt.moves.length)].gameTreePromise);
+  //   return judge(gt.board) * (player === BLACK ? 1 : -1);
+  // }
 
 
 
